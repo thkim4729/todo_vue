@@ -1,7 +1,9 @@
 <template>
+    <!-- http://todomvc.com/examples/vue/#/all -->
     <v-row class="home" justify="center">
         <div class="home-content">
             <h1>todos</h1>
+
             <v-card elevation="10">
                 <v-text-field
                     class="todo-text-field"
@@ -15,23 +17,23 @@
                 ></v-text-field>
                 <v-btn class="todo-search-btn" color="primary" text small absolute><v-icon class="todo-search-icon" small @click="addTask">검색</v-icon></v-btn>
                 <div class="todo-list">
-                    <v-row align="center" class="list-item" v-for="(todo, i) in todos" :key="i">
-                        <div class="circle">
-                            <v-btn icon large color="green">
+                    <v-row align="center" class="list-item" v-for="(todo, i) in filteredTodos" :key="i" @mouseover="todo.hover = true" @mouseleave="todo.hover = false">
+                        <div :class="{ 'blue-border': todo.complete }" class="circle" @click="editTask(todo)">
+                            <v-btn icon large v-show="todo.complete" color="primary">
                                 <v-icon>mdi-check</v-icon>
                             </v-btn>
                         </div>
-                        <p>{{ todo.title }}</p>
+                        <p :class="{ 'text-complete': todo.complete }">{{ todo.title }}</p>
                         <v-spacer></v-spacer>
-                        <v-btn icon large><v-icon>mdi-close</v-icon></v-btn>
+                        <v-btn icon large @click="deleteTask(todo)"><v-icon>mdi-close</v-icon></v-btn>
                     </v-row>
                 </div>
                 <v-divider></v-divider>
                 <v-row class="todo-footer-extension" justify="center" align="center" no-gutters>
                     <p>{{ todos.length }} item left</p>
-                    <v-btn text small outlined>all</v-btn>
-                    <v-btn text small>active</v-btn>
-                    <v-btn text small>completed</v-btn>
+                    <v-btn text small @click="filter = 'all'">all</v-btn>
+                    <v-btn text small @click="filter = 'active'">active</v-btn>
+                    <v-btn text small @click="filter = 'completed'">completed</v-btn>
                 </v-row>
             </v-card>
         </div>
@@ -46,6 +48,16 @@ export default {
     components: {},
     computed: {
         ...mapState(['todos']),
+        filteredTodos() {
+            switch (this.filter) {
+                case 'active':
+                    return this.todos.filter((el) => !el.complete);
+                case 'completed':
+                    return this.todos.filter((el) => el.complete);
+                default:
+                    return this.todos;
+            }
+        },
         newId() {
             return (
                 this.todos.reduce((acc, cur) => {
@@ -55,7 +67,7 @@ export default {
         },
     },
     data() {
-        return { newTitle: '' };
+        return { newTitle: '', filter: '' };
     },
     methods: {
         addTask() {
@@ -64,6 +76,14 @@ export default {
                 complete: false,
                 title: this.newTitle,
             });
+            this.newTitle = '';
+        },
+        editTask(task) {
+            task.complete = !task.complete;
+            this.$store.commit('editTask', task);
+        },
+        deleteTask(task) {
+            this.$store.commit('deleteTask', task);
         },
     },
 };
@@ -101,6 +121,9 @@ h1 {
 }
 .list-item {
     padding: 10px 16px;
+    .blue-border {
+        border: 1px solid rgb(0, 132, 255) !important;
+    }
     .circle {
         width: 45px;
         height: 45px;
@@ -115,11 +138,16 @@ h1 {
 }
 .todo-footer-extension {
     position: relative;
+    height: 50px;
     p {
         position: absolute;
         left: 10px;
-        top: 5px;
+        top: 16px;
         font-size: 12px;
     }
+}
+.text-complete {
+    text-decoration: line-through;
+    opacity: 0.5;
 }
 </style>
