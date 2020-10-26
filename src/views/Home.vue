@@ -15,17 +15,34 @@
                     @keyup.enter="addTask"
                     v-model="newTitle"
                 ></v-text-field>
-                <v-btn class="todo-search-btn" color="primary" text small absolute><v-icon class="todo-search-icon" small @click="addTask">검색</v-icon></v-btn>
+                <v-btn class="todo-search-btn" color="primary" text small absolute
+                    ><v-icon class="todo-search-icon" small @click="addTask">검색</v-icon></v-btn
+                >
                 <div class="todo-list">
-                    <v-row align="center" class="list-item" v-for="(todo, i) in filteredTodos" :key="i" @mouseover="todo.hover = true" @mouseleave="todo.hover = false">
-                        <div :class="{ 'blue-border': todo.complete }" class="circle" @click="editTask(todo)">
+                    <v-row
+                        align="center"
+                        class="list-item"
+                        v-for="(todo, i) in filteredTodos"
+                        :key="i"
+                        @mouseover="todo.hover = true"
+                        @mouseleave="todo.hover = false"
+                    >
+                        <div
+                            :class="{ 'blue-border': todo.complete }"
+                            class="circle"
+                            @click="editTask(todo)"
+                        >
                             <v-btn icon large v-show="todo.complete" color="primary">
                                 <v-icon>mdi-check</v-icon>
                             </v-btn>
                         </div>
-                        <p :class="{ 'text-complete': todo.complete }">{{ todo.title }}</p>
+                        <p :class="{ 'text-complete': todo.complete }">
+                            {{ todo.title }}
+                        </p>
                         <v-spacer></v-spacer>
-                        <v-btn icon large @click="deleteTask(todo)"><v-icon>mdi-close</v-icon></v-btn>
+                        <v-btn icon large @click="deleteTask(todo)"
+                            ><v-icon>mdi-close</v-icon></v-btn
+                        >
                     </v-row>
                 </div>
                 <v-divider></v-divider>
@@ -88,6 +105,7 @@ export default {
     },
 };
 </script>
+
 <style lang="scss" scoped>
 .home {
     background: #f5f5f5;
