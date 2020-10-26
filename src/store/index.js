@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     state: {
         todos: [],
     },
@@ -22,7 +22,20 @@ export default new Vuex.Store({
             let deleteIndex = state.todos.indexOf(targetTask);
             state.todos.splice(deleteIndex, 1);
         },
+        //-------------------------------------------------------------------------------------------
+        // 새로고침해도 저장된 값 없어지지 않게 하기
+        initializeStore(state) {
+            if (localStorage.getItem('store')) {
+                this.replaceState(Object.assign(state, JSON.parse(localStorage.getItem('store'))));
+            }
+        }, //-----------------------------------------------------------------------------------------
     },
     actions: {},
     modules: {},
 });
+// 새로고침해도 저장된 값 없어지지 않게 하기
+store.subscribe((mutation, state) => {
+    localStorage.setItem('store', JSON.stringify(state));
+});
+//-------------------------------------------------------
+export default store;

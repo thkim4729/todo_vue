@@ -2,7 +2,7 @@
     <!-- http://todomvc.com/examples/vue/#/all -->
     <v-row class="home" justify="center">
         <div class="home-content">
-            <h1>todos</h1>
+            <router-link to="/"><h1 @click="reload">todos</h1></router-link>
 
             <v-card elevation="10">
                 <v-text-field
@@ -47,10 +47,20 @@
                 </div>
                 <v-divider></v-divider>
                 <v-row class="todo-footer-extension" justify="center" align="center" no-gutters>
-                    <p>{{ todos.length }} item left</p>
-                    <v-btn text small @click="filter = 'all'">all</v-btn>
-                    <v-btn text small @click="filter = 'active'">active</v-btn>
-                    <v-btn text small @click="filter = 'completed'">completed</v-btn>
+                    <p>{{ filteredTodos.length }} item left</p>
+                    <v-btn text small :outlined="filter === 'all'" @click="filter = 'all'"
+                        >all</v-btn
+                    >
+                    <v-btn text small :outlined="filter === 'active'" @click="filter = 'active'"
+                        >active</v-btn
+                    >
+                    <v-btn
+                        text
+                        small
+                        :outlined="filter === 'completed'"
+                        @click="filter = 'completed'"
+                        >completed</v-btn
+                    >
                 </v-row>
             </v-card>
         </div>
@@ -102,6 +112,9 @@ export default {
         deleteTask(task) {
             this.$store.commit('deleteTask', task);
         },
+        reload() {
+            location.reload();
+        },
     },
 };
 </script>
@@ -113,8 +126,8 @@ export default {
 .home-content {
     width: 100%;
     max-width: 800px;
-    height: 100vh;
-    background-color: #fff;
+    // height: 100vh;
+    background-color: #f5f5f5;
     padding: 48px;
 }
 .todo-search-btn {
@@ -135,7 +148,7 @@ h1 {
     margin-bottom: 24px;
 }
 .todo-text-field {
-    height: 80px;
+    max-height: 80px !important;
 }
 .list-item {
     padding: 10px 16px;
@@ -156,11 +169,11 @@ h1 {
 }
 .todo-footer-extension {
     position: relative;
-    height: 50px;
+    height: 40px;
     p {
         position: absolute;
         left: 10px;
-        top: 16px;
+        top: 12px;
         font-size: 12px;
     }
 }
