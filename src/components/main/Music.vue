@@ -26,7 +26,11 @@ export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        reload() {
+            location.reload();
+        },
+    },
     computed: {},
 };
 </script>
