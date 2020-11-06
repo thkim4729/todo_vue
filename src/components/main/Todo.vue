@@ -138,7 +138,7 @@ export default {
 <style lang="scss" scoped>
 ::-webkit-scrollbar {
     /* 스크롤바 전체 영역 */
-    width: 10px;
+    width: 8px;
 }
 ::-webkit-scrollbar-track {
     /* 스크롤이 움직이는 영역  */
