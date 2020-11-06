@@ -22,6 +22,10 @@ const store = new Vuex.Store({
             let deleteIndex = state.todos.indexOf(targetTask);
             state.todos.splice(deleteIndex, 1);
         },
+        clearAll(state, payload) {
+            let targetIndex = state.todos.find((el) => el === payload);
+            state.todos.splice(targetIndex);
+        },
         //-------------------------------------------------------------------------------------------
         // 새로고침해도 저장된 값 없어지지 않게 하기
         initializeStore(state) {
