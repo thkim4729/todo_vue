@@ -31,11 +31,7 @@
                         @mouseover="todo.hover = true"
                         @mouseleave="todo.hover = false"
                     >
-                        <div
-                            :class="{ 'blue-border': todo.complete }"
-                            class="circle"
-                            @click="editTask(todo)"
-                        >
+                        <div class="circle blue-border" @click="editTask(todo)">
                             <v-btn icon large v-show="todo.complete" color="primary">
                                 <v-icon>mdi-check</v-icon>
                             </v-btn>
@@ -207,6 +203,7 @@ export default {
     padding: 10px 16px;
     .blue-border {
         border: 1px solid rgb(0, 132, 255) !important;
+        cursor: pointer;
     }
     .circle {
         width: 45px;
